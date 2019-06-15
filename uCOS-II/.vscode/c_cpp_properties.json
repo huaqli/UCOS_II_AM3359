@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "./AM3359/",
+                "./EXAMPLES/",
+                "./SOFTWARE/"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11"
+        }
+    ],
+    "version": 4
+}
