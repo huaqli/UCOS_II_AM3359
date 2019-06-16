@@ -2,7 +2,7 @@
 *********************************************************************************************************
 *                                              EXAMPLE CODE
 *
-*                             (c) Copyright 2014; Micrium, Inc.; Weston, FL
+*                          (c) Copyright 2003-2006; Micrium, Inc.; Weston, FL
 *
 *               All rights reserved.  Protected by international copyright laws.
 *               Knowledge of the source code may NOT be used to develop a similar product.
@@ -14,35 +14,24 @@
 /*
 *********************************************************************************************************
 *
-*                                      APPLICATION CONFIGURATION
+*                                       APPLICATION CONFIGURATION
 *
-*                                      Texas Instruments AM3517
+*                                          Freescale MAC7111
+*                                                on the
+*                                      MAC7100 Evaluation Board
 *
-*                                              on the
-*
-*                                             EVM-AM3517
-*                                         Evaluation Board
-*
-* Filename      : app.c
+* Filename      : app_cfg.h
 * Version       : V1.00
-* Programmer(s) : FF
-*                 JM
+* Programmer(s) : BAN
 *********************************************************************************************************
 */
 
-#ifndef  APP_CFG_MODULE_PRESENT
-#define  APP_CFG_MODULE_PRESENT
-
+#ifndef  __APP_CFG_H__
+#define  __APP_CFG_H__
 
 /*
 *********************************************************************************************************
 *                                       ADDITIONAL uC/MODULE ENABLES
-*
-* Note(s)  (1) The following #define's enables or disables the uC/modules
-*
-*              (b) APP_CFG_PROBE_COM_EN         Enables communication in uC/Probe
-*                                               Look at the probe_com_cfg.h file to see all the available
-*                                               comunication methods.
 *********************************************************************************************************
 */
 
@@ -53,20 +42,29 @@
 *********************************************************************************************************
 */
 
-#define  APP_CFG_TASK_START_PRIO                          4u
+#define  APP_TASK_START_PRIO                   5
+#define  APP_TASK_ADC_PRIO                     6
 
-#define  OS_TASK_TMR_PRIO               (OS_LOWEST_PRIO - 2)
-
+#define  OS_TASK_TMR_PRIO              (OS_LOWEST_PRIO - 2)
 
 /*
 *********************************************************************************************************
 *                                            TASK STACK SIZES
-*                             Size of the task stacks (# of OS_STK entries)
 *********************************************************************************************************
 */
 
-#define  APP_CFG_TASK_START_STK_SIZE                   128
+#define  APP_TASK_START_STK_SIZE             256
+#define  APP_TASK_ADC_STK_SIZE               256
 
+#define  OS_PROBE_TASK_STK_SIZE              512
+
+/*
+*********************************************************************************************************
+*                                       uC/OS-II DCC CONFIGURATION
+*********************************************************************************************************
+*/
+
+#define  OS_CPU_ARM_DCC_EN                      0
 
 /*
 *********************************************************************************************************
@@ -74,13 +72,17 @@
 *********************************************************************************************************
 */
 
-#include  <stdio.h>
+#define  TRACE_LEVEL_OFF                       0
+#define  TRACE_LEVEL_INFO                      1
+#define  TRACE_LEVEL_DEBUG                     2
 
-#define  APP_TRACE_LEVEL                        TRACE_LEVEL_DBG
-#define  APP_TRACE                              printf
+#define  APP_TRACE_LEVEL                TRACE_LEVEL_DEBUG
+#define  APP_TRACE                        
 
-#define  APP_TRACE_INFO(x)                      ((APP_TRACE_LEVEL >= TRACE_LEVEL_INFO) ? (void)(APP_TRACE x) : (void)0)
-#define  APP_TRACE_DBG(x)                       ((APP_TRACE_LEVEL >= TRACE_LEVEL_DBG ) ? (void)(APP_TRACE x) : (void)0)
+#define  APP_TRACE_INFO(x)            ((APP_TRACE_LEVEL >= TRACE_LEVEL_INFO)  ? (void)(APP_TRACE x) : (void)0)
+#define  APP_TRACE_DEBUG(x)           ((APP_TRACE_LEVEL >= TRACE_LEVEL_DEBUG) ? (void)(APP_TRACE x) : (void)0)
+
+
 
 
 #endif
