@@ -307,7 +307,7 @@ OS_STK *OSTaskStkInit (void (*task)(void *p_arg), void *p_arg, OS_STK *ptos, INT
 
     opt       = opt;                                                    /* 'opt' is not used, prevent warning                       */
     stk       = ptos;                                                   /* Load stack pointer                                       */
-    task_addr = (INT32U)task & ~1;                                      /* Mask off lower bit in case task is thumb mode            */
+    task_addr = (INT32U)task; //& ~1;                                      /* Mask off lower bit in case task is thumb mode            */
     *(stk)    = (INT32U)task_addr;                                      /* Entry Point                                              */
     *(--stk)  = (INT32U)0x14141414L;                                    /* R14 (LR)                                                 */
     *(--stk)  = (INT32U)0x12121212L;                                    /* R12                                                      */
@@ -323,6 +323,7 @@ OS_STK *OSTaskStkInit (void (*task)(void *p_arg), void *p_arg, OS_STK *ptos, INT
     *(--stk)  = (INT32U)0x02020202L;                                    /* R2                                                       */
     *(--stk)  = (INT32U)0x01010101L;                                    /* R1                                                       */
     *(--stk)  = (INT32U)p_arg;                                          /* R0 : argument                                            */
+    //*(--stk)  = (INT32U)task_addr;                                      /* Entry Point                                              */
     if ((INT32U)task & 0x01) {                                          /* See if task runs in Thumb or ARM mode                    */
         *(--stk) = (INT32U)ARM_SVC_MODE_THUMB;                          /* CPSR  (Enable both IRQ and FIQ interrupts, THUMB-mode)   */
     } else {

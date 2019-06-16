@@ -8,6 +8,7 @@
 #include"os_cfg.h"
 
 OS_STK MyTaskStack[30];
+void (*fp)();
 
 void MyTask(void *pdata)
 {
@@ -19,7 +20,6 @@ void MyTask(void *pdata)
 int main(void)
 {
     OSInit();
-    OSTaskCreate(MyTask, (void *)0, &MyTaskStack[29], 1);
     OSStart();
     return 0;
 }

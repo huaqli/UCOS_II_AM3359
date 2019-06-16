@@ -15,7 +15,7 @@
 * LICENSING TERMS:
 * ---------------
 *   uC/OS-II is provided in source form for FREE evaluation, for educational use or for peaceful research.
-* If you plan on using  uC/OS-II  in a commercial product you need to contact Micriµm to properly license
+* If you plan on using  uC/OS-II  in a commercial product you need to contact Micriï¿½m to properly license
 * its use in your product. We provide ALL the source code for your convenience and to help you experience
 * uC/OS-II.   The fact that the  source is provided does  NOT  mean that you can use it without  paying a
 * licensing fee.
@@ -63,7 +63,7 @@
 #define OS_TASK_NAME_SIZE        16    /*     Determine the size of a task name                        */
 #define OS_TASK_PROFILE_EN        1    /*     Include variables in OS_TCB for profiling                */
 #define OS_TASK_QUERY_EN          1    /*     Include code for OSTaskQuery()                           */
-#define OS_TASK_STAT_EN           1    /*     Enable (1) or Disable(0) the statistics task             */
+#define OS_TASK_STAT_EN           0    /*     Enable (1) or Disable(0) the statistics task             */
 #define OS_TASK_STAT_STK_CHK_EN   1    /*     Check task stacks from statistic task                    */
 #define OS_TASK_SUSPEND_EN        1    /*     Include code for OSTaskSuspend() and OSTaskResume()      */
 #define OS_TASK_SW_HOOK_EN        1    /*     Include code for OSTaskSwHook()                          */

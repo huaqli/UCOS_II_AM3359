@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -rf start
+
 ${ARMCC} -mcpu=cortex-a8 -mtune=cortex-a8 -march=armv7-a \
         -c -g -mlong-calls -fdata-sections -funsigned-char \
         -I ./BBB/ -I ./EXAMPLE/ -I ./SOFTWARE/ \
