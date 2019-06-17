@@ -152,9 +152,9 @@ OSStartHighRdy:
                                                                 @ Change to SVC mode.
     MSR     CPSR_c, #(OS_CPU_ARM_CONTROL_INT_DIS | OS_CPU_ARM_MODE_SVC)
 
-    @LDR     R0, =OSTaskSwHook                                   @ OSTaskSwHook();
-    @MOV     LR, PC
-    @BX      R0
+    LDR     R0, =OSTaskSwHook                                   @ OSTaskSwHook();
+    MOV     LR, PC
+    BX      R0
 
     LDR     R0, =OSRunning                                      @ OSRunning = TRUE;
     MOV     R1, #1
@@ -171,6 +171,8 @@ OSStartHighRdy:
     LDR     R0,  [SP], #4           
     LDR     R1,  [SP], #4
     LDR     R2,  [SP], #4
+    @STR     R1,  [SP, #-4]!
+    @STR     R0,  [SP, #-4]!
     LDR     R3,  [SP], #4
     LDR     R4,  [SP], #4
     LDR     R5,  [SP], #4
@@ -252,8 +254,8 @@ OSCtxSw:
     LDR     SP, [R2]                                            @ SP = OSTCBHighRdy->OSTCBStkPtr;
 
                                                                 @ RESTORE NEW TASK'S CONTEXT:
-    @LDMFD   SP!, {R0}                                           @    Pop new task's CPSR,
-    LDR     R0,  [SP], #4                                          @    Pop new task's CPSR,
+    @LDMFD   SP!, {R0}                                          @    Pop new task's CPSR,
+    LDR     R0,  [SP], #4                                       @    Pop new task's CPSR,
     MSR     CPSR_cxsf, R0
 
     LDR     R0,  [SP], #4           
@@ -311,9 +313,24 @@ OSIntCtxSw:
 
                                                                 @ RESTORE NEW TASK'S CONTEXT:
     LDMFD   SP!, {R0}                                           @    Pop new task's CPSR,
-    MSR     SPSR_cxsf, R0
+    MSR     CPSR_cxsf, R0
 
-    LDMFD   SP!, {R0-R12, LR, PC}^                              @    Pop new task's context.
+    @LDMFD   SP!, {R0-R12, LR, PC}^                              @    Pop new task's context.
+    LDR     R0,  [SP], #4           
+    LDR     R1,  [SP], #4
+    LDR     R2,  [SP], #4
+    LDR     R3,  [SP], #4
+    LDR     R4,  [SP], #4
+    LDR     R5,  [SP], #4
+    LDR     R6,  [SP], #4
+    LDR     R7,  [SP], #4
+    LDR     R8,  [SP], #4
+    LDR     R9,  [SP], #4
+    LDR     R10, [SP], #4
+    LDR     R11, [SP], #4
+    LDR     R12, [SP], #4
+    LDR     LR,  [SP], #4
+    LDR     PC,  [SP], #4
 
 
 @********************************************************************************************************
