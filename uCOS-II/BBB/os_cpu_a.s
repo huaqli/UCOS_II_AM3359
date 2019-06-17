@@ -208,12 +208,27 @@ OSStartHighRdy:
 
 OSCtxSw:
                                                                 @ SAVE CURRENT TASK'S CONTEXT:
-    STMFD   SP!, {LR}                                           @     Push return address,
-    STMFD   SP!, {LR}
-    STMFD   SP!, {R0-R12}                                       @     Push registers,
-    MRS     R0, CPSR                                            @     Push current CPSR,
-    TST     LR, #1                                              @     See if called from Thumb mode,
-    ORRNE   R0, R0, #OS_CPU_ARM_CONTROL_THUMB                   @     If yes, set the T-bit.
+    @STMFD   SP!, {LR}                                           @     Push return address,
+    @STMFD   SP!, {LR}
+    STR     LR,  [SP, #-4]!
+    STR     LR,  [SP, #-4]!
+    STR     R12, [SP, #-4]!
+    STR     R11, [SP, #-4]!
+    STR     R10, [SP, #-4]!
+    STR     R9,  [SP, #-4]!
+    STR     R8,  [SP, #-4]!
+    STR     R7,  [SP, #-4]!
+    STR     R6,  [SP, #-4]!
+    STR     R5,  [SP, #-4]!
+    STR     R4,  [SP, #-4]!
+    STR     R3,  [SP, #-4]!
+    STR     R2,  [SP, #-4]!
+    STR     R1,  [SP, #-4]!
+    STR     R0,  [SP, #-4]!
+    @STMFD   SP!, {R0-R12}                                       @     Push registers,
+    MRS     R0, CPSR                                             @     Push current CPSR,
+    @TST     LR, #1                                              @     See if called from Thumb mode,
+    @ORRNE   R0, R0, #OS_CPU_ARM_CONTROL_THUMB                   @     If yes, set the T-bit.
     STMFD   SP!, {R0}
 
     LDR     R0, =OSTCBCur                                       @ OSTCBCur->OSTCBStkPtr = SP;
@@ -237,10 +252,26 @@ OSCtxSw:
     LDR     SP, [R2]                                            @ SP = OSTCBHighRdy->OSTCBStkPtr;
 
                                                                 @ RESTORE NEW TASK'S CONTEXT:
-    LDMFD   SP!, {R0}                                           @    Pop new task's CPSR,
-    MSR     SPSR_cxsf, R0
+    @LDMFD   SP!, {R0}                                           @    Pop new task's CPSR,
+    LDR     R0,  [SP], #4                                          @    Pop new task's CPSR,
+    MSR     CPSR_cxsf, R0
 
-    LDMFD   SP!, {R0-R12, LR, PC}^                              @    Pop new task's context.
+    LDR     R0,  [SP], #4           
+    LDR     R1,  [SP], #4
+    LDR     R2,  [SP], #4
+    LDR     R3,  [SP], #4
+    LDR     R4,  [SP], #4
+    LDR     R5,  [SP], #4
+    LDR     R6,  [SP], #4
+    LDR     R7,  [SP], #4
+    LDR     R8,  [SP], #4
+    LDR     R9,  [SP], #4
+    LDR     R10, [SP], #4
+    LDR     R11, [SP], #4
+    LDR     R12, [SP], #4
+    LDR     LR,  [SP], #4
+    LDR     PC,  [SP], #4
+    @LDMFD   SP!, {R0-R12, LR, PC}^                              @    Pop new task's context.
 
 
 @*********************************************************************************************************
