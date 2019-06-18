@@ -158,34 +158,15 @@ OSStartHighRdy:
 
     LDR     R0, =OSRunning                                      @ OSRunning = TRUE;
     MOV     R1, #1
-    STRB    R1, [R0]
-
+    STR     R1, [R0]
                                                                 @ SWITCH TO HIGHEST PRIORITY TASK:
     LDR     R0, =OSTCBHighRdy                                   @    Get highest priority task TCB address,
     LDR     R0, [R0]                                            @    Get stack pointer,
     LDR     SP, [R0]                                            @    Switch to the new stack,
 
-    LDR     R0, [SP], #4                                        @    Pop new task's CPSR,
+    LDMFD   SP!, {R0}
     MSR     CPSR_cxsf, R0
-
-    LDR     R0,  [SP], #4           
-    LDR     R1,  [SP], #4
-    LDR     R2,  [SP], #4
-    @STR     R1,  [SP, #-4]!
-    @STR     R0,  [SP, #-4]!
-    LDR     R3,  [SP], #4
-    LDR     R4,  [SP], #4
-    LDR     R5,  [SP], #4
-    LDR     R6,  [SP], #4
-    LDR     R7,  [SP], #4
-    LDR     R8,  [SP], #4
-    LDR     R9,  [SP], #4
-    LDR     R10, [SP], #4
-    LDR     R11, [SP], #4
-    LDR     R12, [SP], #4
-    LDR     LR,  [SP], #4
-    LDR     PC,  [SP], #4
-    @LDMFD   SP!, {R0-R12, LR, PC}^                              @    Pop new task's context.
+    LDMFD   SP!, {R0-R12, LR, PC}                              @    Pop new task's context.
     
 
 @*********************************************************************************************************
@@ -210,24 +191,9 @@ OSStartHighRdy:
 
 OSCtxSw:
                                                                 @ SAVE CURRENT TASK'S CONTEXT:
-    @STMFD   SP!, {LR}                                           @     Push return address,
+    @STMFD   SP!, {LR}                                          @     Push return address,
     @STMFD   SP!, {LR}
-    STR     LR,  [SP, #-4]!
-    STR     LR,  [SP, #-4]!
-    STR     R12, [SP, #-4]!
-    STR     R11, [SP, #-4]!
-    STR     R10, [SP, #-4]!
-    STR     R9,  [SP, #-4]!
-    STR     R8,  [SP, #-4]!
-    STR     R7,  [SP, #-4]!
-    STR     R6,  [SP, #-4]!
-    STR     R5,  [SP, #-4]!
-    STR     R4,  [SP, #-4]!
-    STR     R3,  [SP, #-4]!
-    STR     R2,  [SP, #-4]!
-    STR     R1,  [SP, #-4]!
-    STR     R0,  [SP, #-4]!
-    @STMFD   SP!, {R0-R12}                                       @     Push registers,
+    STMFD   SP!, {LR, LR, R12, R11, R10, R9, R8, R7, R6, R5, R4, R3, R2, R1, R0}
     MRS     R0, CPSR                                             @     Push current CPSR,
     @TST     LR, #1                                              @     See if called from Thumb mode,
     @ORRNE   R0, R0, #OS_CPU_ARM_CONTROL_THUMB                   @     If yes, set the T-bit.
@@ -243,8 +209,8 @@ OSCtxSw:
 
     LDR     R0, =OSPrioCur                                      @ OSPrioCur = OSPrioHighRdy;
     LDR     R1, =OSPrioHighRdy
-    LDRB    R2, [R1]
-    STRB    R2, [R0]
+    LDR     R2, [R1]
+    STR     R2, [R0]
 
     LDR     R0, =OSTCBCur                                       @ OSTCBCur  = OSTCBHighRdy;
     LDR     R1, =OSTCBHighRdy
@@ -254,26 +220,9 @@ OSCtxSw:
     LDR     SP, [R2]                                            @ SP = OSTCBHighRdy->OSTCBStkPtr;
 
                                                                 @ RESTORE NEW TASK'S CONTEXT:
-    @LDMFD   SP!, {R0}                                          @    Pop new task's CPSR,
-    LDR     R0,  [SP], #4                                       @    Pop new task's CPSR,
+    LDMFD   SP!, {R0}                                          @    Pop new task's CPSR,
     MSR     CPSR_cxsf, R0
-
-    LDR     R0,  [SP], #4           
-    LDR     R1,  [SP], #4
-    LDR     R2,  [SP], #4
-    LDR     R3,  [SP], #4
-    LDR     R4,  [SP], #4
-    LDR     R5,  [SP], #4
-    LDR     R6,  [SP], #4
-    LDR     R7,  [SP], #4
-    LDR     R8,  [SP], #4
-    LDR     R9,  [SP], #4
-    LDR     R10, [SP], #4
-    LDR     R11, [SP], #4
-    LDR     R12, [SP], #4
-    LDR     LR,  [SP], #4
-    LDR     PC,  [SP], #4
-    @LDMFD   SP!, {R0-R12, LR, PC}^                              @    Pop new task's context.
+    LDMFD   SP!, {R0-R12, LR, PC}                              @    Pop new task's context.
 
 
 @*********************************************************************************************************
